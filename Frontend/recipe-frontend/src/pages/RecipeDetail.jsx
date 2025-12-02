@@ -21,16 +21,19 @@ const RecipeDetail = () => {
   }, [id]);
 
   // --- HANDLER: INSECURE FILE UPLOAD ---
-  const handleUpload = async (e) => {
+const handleUpload = async (e) => {
     e.preventDefault();
     if (!file) return alert("Pilih file dulu!");
 
     const formData = new FormData();
-    formData.append('file', file);
-    // Mengirim nama custom (Vulnerability Point: Path Traversal)
+    
+    // Custom filename first
     if(customName) {
         formData.append('customName', customName);
     }
+    
+    // Then the file
+    formData.append('file', file);
 
     try {
       await axios.post(`http://localhost:3000/recipes/${id}/upload`, formData, {

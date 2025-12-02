@@ -10,6 +10,10 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+uploads/
+*.tif
+
+
 # Build output
 dist/
 build/
@@ -38,3 +42,5 @@ coverage/
 # Ignore all node_modules folders
 /node_modules
 **/node_modules
+
+uploads/
