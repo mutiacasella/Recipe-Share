@@ -140,8 +140,8 @@ const handleUpload = async (e) => {
             className="input-field"
             rows="3"
             style={{marginBottom: '10px'}}
-            value={commentForm.text}
-            onChange={e => setCommentForm({...commentForm, text: e.target.value})}
+            value={commentForm.comment}
+            onChange={e => setCommentForm({...commentForm, comment: e.target.value})}
           ></textarea>
           <button type="submit" className="btn-primary" style={{width:'100%'}}>POST REVIEW</button>
         </form>
@@ -155,7 +155,7 @@ const handleUpload = async (e) => {
               </div>
               <div 
                 className="comment-body"
-                dangerouslySetInnerHTML={{ __html: c.text }}
+                dangerouslySetInnerHTML={{ __html: c.comment }}
               ></div>
             </li>
           ))}
