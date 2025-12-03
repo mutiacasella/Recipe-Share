@@ -7,7 +7,7 @@ const RecipeDetail = () => {
   const [recipe, setRecipe] = useState(null);
   
   // State for forms
-  const [commentForm, setCommentForm] = useState({ user: '', text: '' });
+  const [commentForm, setCommentForm] = useState({ user: '', comment: '' });
   const [file, setFile] = useState(null);
   const [customName, setCustomName] = useState(''); // State for custom filename
   const fetchRecipe = () => {
@@ -52,7 +52,7 @@ const handleUpload = async (e) => {
     e.preventDefault();
     try {
       await axios.post(`http://localhost:3000/recipes/${id}/comment`, commentForm);
-      setCommentForm({ user: '', text: '' });
+      setCommentForm({ user: '', comment: '' });
       fetchRecipe(); 
     } catch (err) {
       console.error(err);
@@ -153,10 +153,9 @@ const handleUpload = async (e) => {
                 <span className="comment-user">{c.user}</span>
                 <span className="comment-date">{c.date}</span>
               </div>
-              <div 
-                className="comment-body"
-                dangerouslySetInnerHTML={{ __html: c.comment }}
-              ></div>
+              <div className="comment-body">
+                {c.comment}
+              </div>
             </li>
           ))}
         </ul>

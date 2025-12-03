@@ -117,6 +117,15 @@ let recipes = [
     }
 ];
 
+recipes.forEach(recipe => {
+    recipe.comments.forEach(comment => {
+        if (comment.text && !comment.comment) {
+            comment.comment = comment.text;
+            delete comment.text;
+        }
+    });
+});
+
 // --- Secure File Upload ---
 
 // Folder Upload Validation
@@ -213,7 +222,7 @@ app.post('/recipes/:id/upload', (req, res) => {
 app.get('/admin/dashboard', (req, res) => {
     let allComments = [];
     recipes.forEach(r => {
-        r.comments.forEach(c => allComments.push({ user: c.user, text: c.text }));
+        r.comments.forEach(c => allComments.push({ user: c.user, comment: c.comment }));
     });
     
     // Render  secure Admin Dashboard
@@ -225,12 +234,28 @@ app.get('/admin/dashboard', (req, res) => {
             <p>Data Clean & Safe. No raw HTML rendering.</p>
             <table border="1" cellpadding="10" style="border-collapse:collapse; width:100%">
                 <tr><th>User</th><th>Comment (Sanitized)</th></tr>
-                ${allComments.map(c => `<tr><td>${c.user}</td><td>${c.text}</td></tr>`).join('')}
+                ${allComments.map(c => `<tr><td>${c.user}</td><td>${c.comment}</td></tr>`).join('')}
             </table>
         </body>
         </html>
     `;
     res.send(html);
+});
+
+app.get('/recipes/:id', (req, res) => {
+    const recipe = recipes.find(r => r.id == req.params.id);
+    if (!recipe) return res.status(404).json({ error: 'Not found' });
+    
+    console.log('\n=== /recipes/' + req.params.id + ' ===');
+    console.log('Recipe:', recipe.name);
+    console.log('Comments count:', recipe.comments.length);
+    if (recipe.comments.length > 0) {
+        console.log('First comment:', recipe.comments[0]);
+        console.log('First comment keys:', Object.keys(recipe.comments[0]));
+    }
+    console.log('================\n');
+    
+    res.json(recipe);
 });
 
 app.listen(PORT, () => {
