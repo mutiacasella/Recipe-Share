@@ -174,16 +174,16 @@ app.post('/recipes/:id/comment', (req, res) => {
     const recipe = recipes.find(r => r.id == req.params.id);
     if (!recipe) return res.status(404).json({ error: 'Not found' });
 
-    const { user, text } = req.body;
-    
+    const { user, comment } = req.body;
+
     // REMEDIATION: Input Sanitization using xss library
     const cleanUser = xss(user);
-    const cleanText = xss(text);
+    const cleanText = xss(comment);
 
     recipe.comments.push({
         id: recipe.comments.length + 1,
         user: cleanUser,
-        text: cleanText,
+        comment: cleanText,
         date: new Date().toLocaleString()
     });
 
